@@ -31,4 +31,4 @@ Create an endpoint that allows a user to filter the comments based on all the av
 
 ![alt text][logo]
 
-[logo]: https://github.com/adam-p/markdown-here/raw/master/src/common/images/icon48.png "Logo Title Text 2"
+[logo]: https://github.com/myruldeen/backend-test/blob/master/images/img1.PNG "Logo Title Text 2"
