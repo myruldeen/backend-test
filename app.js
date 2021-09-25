@@ -1,68 +1,24 @@
-const axios = require('axios');
+const express = require('express');
+const logger = require('morgan');
+const cors = require('cors');
+
+const app = express();
+
+app.use(cors());
+app.options('*', cors());
+app.use(express.json()) 
+app.use(express.urlencoded({ extended: true })) 
+app.use(logger('tiny'))
 
 // get all comments by post id
 
-function getAllPost(cb) {
-    axios.get('https://jsonplaceholder.typicode.com/posts').then((res) => {
-        return cb(res.data)
-    });
-}
-
-
-function getTotalComment(id) {
-
-    const promise = new Promise((resolve, reject) => {
-        axios.get('https://jsonplaceholder.typicode.com/posts/' + id + '/comments').then((result) => {
-            resolve(result.data);
-        }).catch((err) => {
-            reject(err);
-        })
-    });
-
-    return promise;
-
-}
-
-getAllPost((data) => {
-  
-    let promises = data.map((val) => {
-        return getTotalComment(val.id).then((result) => {
-            return {
-                post_id: val.id,
-                post_title: val.title,
-                post_body: val.body,
-                total_number_of_comments: result.length
-            }
-        }).catch((err) => console.log(err.message));
-    })
-    Promise.all(promises).then((res) => {
-        console.log(res);
-    }).catch((err) => console.log(err.message));
+app.get('/v1', (req, res) => {
+    res.json('api v1');
 })
 
+app.use('/v1/posts', require('./routes/post'));
 
-
-// getTotalComment(postId)
-//     .then((result) => {
-
-//         return axios.get('https://jsonplaceholder.typicode.com/posts/' + postId)
-//             .then((x) => {
-//                 return {
-//                     post_id: x.data.id,
-//                     post_title: x.data.title,
-//                     post_body: x.data.body,
-//                     total_number_of_comments: result.length
-//                 }
-//             })
-
-//     })
-//     .then((x) => {
-//         console.log(x);
-//     })
-//     .catch((err) => {
-//         console.log(err);
-//     })
-
-
-
+app.listen(3000, () => {
+    console.log('server started on port 3000');
+})
 
