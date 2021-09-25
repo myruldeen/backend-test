@@ -1,10 +1,13 @@
 const axios = require('axios');
-const _ = require('lodash');
-
-
-let postId = 1;
 
 // get all comments by post id
+
+function getAllPost(cb) {
+    axios.get('https://jsonplaceholder.typicode.com/posts').then((res) => {
+        return cb(res.data)
+    });
+}
+
 
 function getTotalComment(id) {
 
@@ -20,41 +23,46 @@ function getTotalComment(id) {
 
 }
 
-
-getTotalComment(postId)
-    .then((result) => {
-
-        return axios.get('https://jsonplaceholder.typicode.com/posts/' + postId)
-            .then((x) => {
-                return {
-                    post_id: x.data.id,
-                    post_title: x.data.title,
-                    post_body: x.data.body,
-                    total_number_of_comments: result.length
-                }
-            })
-
+getAllPost((data) => {
+  
+    let promises = data.map((val) => {
+        return getTotalComment(val.id).then((result) => {
+            return {
+                post_id: val.id,
+                post_title: val.title,
+                post_body: val.body,
+                total_number_of_comments: result.length
+            }
+        }).catch((err) => console.log(err.message));
     })
-    .then((x) => {
-        console.log(x);
-    })
-    .catch((err) => {
-        console.log(err);
-    })
+    Promise.all(promises).then((res) => {
+        console.log(res);
+    }).catch((err) => console.log(err.message));
+})
 
 
-// axios.all([axios.get(endpoint.posts),
-// axios.get(endpoint.comments)])
-//     .then(axios.spread((posts, comments) => {
 
-//         var merged = _.map(posts.data, function (item) {
-//             return _.assign(item, _.find(comments.data, ['postId', item.id]));
-//         });
+// getTotalComment(postId)
+//     .then((result) => {
 
-//         console.log(merged)
+//         return axios.get('https://jsonplaceholder.typicode.com/posts/' + postId)
+//             .then((x) => {
+//                 return {
+//                     post_id: x.data.id,
+//                     post_title: x.data.title,
+//                     post_body: x.data.body,
+//                     total_number_of_comments: result.length
+//                 }
+//             })
 
-//     }))
-//     .catch(error => console.log(error));
+//     })
+//     .then((x) => {
+//         console.log(x);
+//     })
+//     .catch((err) => {
+//         console.log(err);
+//     })
+
 
 
 
