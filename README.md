@@ -33,6 +33,6 @@ Create an endpoint that allows a user to filter the comments based on all the av
 
 [logo]: https://github.com/myruldeen/backend-test/blob/master/images/img1.PNG "Image 1"
 
-![alt text][logo]
+![alt text][logo1]
 
-[logo]: https://github.com/myruldeen/backend-test/blob/master/images/img2.PNG "Image 2"
+[logo1]: https://github.com/myruldeen/backend-test/blob/master/images/img2.PNG "Image 2"
